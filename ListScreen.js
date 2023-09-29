@@ -34,7 +34,7 @@ export default class ListScreen extends Component {
     const { movieList } = this.state;
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.heading}>Danh sách phim</Text>
+        <Text style={styles.heading}>Movie List</Text>
         {movieList.map((movie) => (
           <TouchableOpacity
             key={movie.imdbID}
