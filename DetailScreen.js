@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import axios from "axios";
-
+import { view } from "./api";
 export default class DetailScreen extends Component {
   constructor(props) {
     super(props);
@@ -11,19 +11,21 @@ export default class DetailScreen extends Component {
   }
 
   componentDidMount() {
-    const imdbID = this.props.navigation.getParam("imdbID"); // IMDb ID của phim cần lấy thông tin
-    const apiKey = "961ecfbe";
-    const apiUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`;
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        const movieDetails = response.data;
-        this.setState({ movieDetails });
-      })
-      .catch((error) => {
-        console.error("Error fetching movie details: ", error);
-      });
+    // Lấy IMDb ID từ props
+    const imdbID = this.props.navigation.getParam("imdbID");
+
+    // Gọi API để lấy chi tiết của phim
+    this.fetchMovieDetails(imdbID);
   }
+
+  fetchMovieDetails = async (imdbID) => {
+    try {
+      const response = await view(imdbID);
+      this.setState({ movieDetails: response });
+    } catch (error) {
+      console.error("Error fetching movie details: ", error);
+    }
+  };
 
   render() {
     const { movieDetails } = this.state;
